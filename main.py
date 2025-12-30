@@ -157,16 +157,11 @@ def build_answer(req: AskRequest, top_chunks: List[dict]) -> Tuple[str, List[str
 @app.get("/health")
 def health():
     return {"status": "ok"}
-@app.get("/debug/env")
-def debug_env():
-    return {
-        "has_supabase_url": bool(SUPABASE_URL),
-        "supabase_url_prefix": SUPABASE_URL[:20],
-        "has_service_key": bool(SUPABASE_SERVICE_ROLE_KEY),
-        "service_key_prefix": (SUPABASE_SERVICE_ROLE_KEY or "")[:3],  # moet 'eyJ' zijn
-        "service_key_len": len(SUPABASE_SERVICE_ROLE_KEY or ""),
-        "has_app_api_key": bool(APP_API_KEY),
-    }
+@app.get("/debug/check")
+def debug_check(x_api_key: str | None = Header(default=None)):
+    require_key(x_api_key)
+    _ = sb()  # probeert Supabase client te maken; faalt als keys fout zijn
+    return {"ok": True}
 
 @app.post("/ingest/{document_id}")
 def ingest(document_id: str,
