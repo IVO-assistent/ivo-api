@@ -143,7 +143,6 @@ def build_answer(req: AskRequest, top_chunks: List[dict]) -> Tuple[str, List[str
 @app.get("/health")
 def health():
     return {"status": "ok"}
-    
 @app.get("/debug/env")
 def debug_env():
     # laat NIET de sleutel zien, alleen of hij aanwezig is en hoe hij begint
