@@ -1,3 +1,17 @@
+from fastapi.responses import JSONResponse
+from fastapi import Request
+import traceback
+
+@app.exception_handler(Exception)
+async def all_exception_handler(request: Request, exc: Exception):
+    return JSONResponse(
+        status_code=500,
+        content={
+            "error": str(exc),
+            "hint": "Check env vars SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY",
+        },
+    )
+
 import os, io
 from typing import List, Optional, Tuple
 from fastapi import FastAPI, Header, HTTPException
