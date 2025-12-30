@@ -145,15 +145,15 @@ def health():
     return {"status": "ok"}
 @app.get("/debug/env")
 def debug_env():
-    # laat NIET de sleutel zien, alleen of hij aanwezig is en hoe hij begint
     return {
         "has_supabase_url": bool(SUPABASE_URL),
         "supabase_url_prefix": SUPABASE_URL[:20],
         "has_service_key": bool(SUPABASE_SERVICE_ROLE_KEY),
-        "service_key_prefix": SUPABASE_SERVICE_ROLE_KEY[:3],  # moet 'eyJ' zijn
+        "service_key_prefix": (SUPABASE_SERVICE_ROLE_KEY or "")[:3],  # moet 'eyJ' zijn
         "service_key_len": len(SUPABASE_SERVICE_ROLE_KEY or ""),
         "has_app_api_key": bool(APP_API_KEY),
     }
+
 @app.post("/ingest/{document_id}")
 def ingest(document_id: str,
            x_api_key: str | None = Header(default=None),
